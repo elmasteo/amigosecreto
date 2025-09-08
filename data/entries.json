@@ -46,5 +46,19 @@
     "generatedNumber": 4,
     "assignedRecipient": 1,
     "createdAt": "2025-09-08T14:57:52.688Z"
+  },
+  {
+    "id": 1757345172241,
+    "name": "juan carechimba",
+    "gifts": [
+      "casa",
+      "aptov2",
+      "carro",
+      "chofer",
+      "otro"
+    ],
+    "generatedNumber": 5,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-08T15:26:11.699Z"
   }
 ]
