@@ -24,10 +24,10 @@ exports.handler = async function(){
     // expose only safe fields
     const publicEntries = entries.map(e=>({
       id: e.id,
-      name: e.name,
       gifts: e.gifts,
       generatedNumber: e.generatedNumber,
-      createdAt: e.createdAt
+      createdAt: e.createdAt,
+      assignedRecipient: e.assignedRecipient
     }));
     return { statusCode:200, body: JSON.stringify(publicEntries) };
   } catch(err){
