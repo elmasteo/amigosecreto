@@ -22,5 +22,17 @@
     "generatedNumber": 2,
     "assignedRecipient": 1,
     "createdAt": "2025-09-08T14:50:27.288Z"
+  },
+  {
+    "id": 1757343415892,
+    "name": "juan perez",
+    "gifts": [
+      "patin",
+      "casa",
+      "terreno"
+    ],
+    "generatedNumber": 3,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-08T14:56:55.603Z"
   }
 ]
