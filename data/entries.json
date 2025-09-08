@@ -1,1 +1,14 @@
-[ ]
+[
+  {
+    "id": 1757352650547,
+    "name": "santiago gomez",
+    "gifts": [
+      "Casa",
+      "Carro",
+      "Terreno"
+    ],
+    "generatedNumber": 1,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-08T17:30:50.084Z"
+  }
+]
