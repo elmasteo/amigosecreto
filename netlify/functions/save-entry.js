@@ -5,11 +5,11 @@ const OWNER = process.env.GITHUB_OWNER;
 const REPO = process.env.GITHUB_REPO;
 const TOKEN = process.env.GITHUB_TOKEN;
 const PATH = process.env.DATA_PATH || 'data/entries.json';
-const BRANCH = process.env.BRANCH || 'main';
+const MY_BRANCH = process.env.MY_BRANCH || 'master';
 const BASE = 'https://api.github.com';
 
 async function getFile(){
-  const url = `${BASE}/repos/${OWNER}/${REPO}/contents/${PATH}?ref=${BRANCH}`;
+  const url = `${BASE}/repos/${OWNER}/${REPO}/contents/${PATH}?ref=${MY_BRANCH}`;
   const r = await fetch(url, { headers:{ Authorization:`token ${TOKEN}`, Accept:'application/vnd.github.v3+json' }});
   if(r.status===404) return null;
   if(!r.ok) throw new Error('Error leyendo archivo: '+r.status);
@@ -18,7 +18,7 @@ async function getFile(){
 
 async function putFile(contentBase64, message, sha){
   const url = `${BASE}/repos/${OWNER}/${REPO}/contents/${PATH}`;
-  const body = { message, content: contentBase64, branch: BRANCH };
+  const body = { message, content: contentBase64, MY_BRANCH: MY_BRANCH };
   if(sha) body.sha = sha;
   const r = await fetch(url, {
     method:'PUT',
