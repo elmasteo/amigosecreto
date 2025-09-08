@@ -8,7 +8,7 @@
       "nuevo"
     ],
     "generatedNumber": 1,
-    "assignedRecipient": 5,
+    "assignedRecipient": 2,
     "createdAt": "2025-09-08T14:41:30.846Z"
   },
   {
@@ -20,7 +20,7 @@
       "nuevo"
     ],
     "generatedNumber": 2,
-    "assignedRecipient": 4,
+    "assignedRecipient": 6,
     "createdAt": "2025-09-08T14:50:27.288Z"
   },
   {
@@ -32,7 +32,7 @@
       "terreno"
     ],
     "generatedNumber": 3,
-    "assignedRecipient": 1,
+    "assignedRecipient": 4,
     "createdAt": "2025-09-08T14:56:55.603Z"
   },
   {
@@ -44,7 +44,7 @@
       "apto"
     ],
     "generatedNumber": 4,
-    "assignedRecipient": 2,
+    "assignedRecipient": 5,
     "createdAt": "2025-09-08T14:57:52.688Z"
   },
   {
@@ -58,7 +58,7 @@
       "otro"
     ],
     "generatedNumber": 5,
-    "assignedRecipient": 3,
+    "assignedRecipient": 1,
     "createdAt": "2025-09-08T15:26:11.699Z"
   },
   {
@@ -70,7 +70,7 @@
       "Casa"
     ],
     "generatedNumber": 6,
-    "assignedRecipient": null,
+    "assignedRecipient": 3,
     "createdAt": "2025-09-08T15:29:37.070Z"
   }
 ]
