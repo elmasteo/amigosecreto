@@ -84,7 +84,7 @@ async function loadPublicEntries(){
   entries.forEach(e=>{
     const tr = document.createElement('tr');
     const gifts = (e.gifts || []).join(', ');
-    tr.innerHTML = `<td>${e.generatedNumber}</td><td>${e.name}</td><td>${gifts}</td>`;
+    tr.innerHTML = `<td>${e.generatedNumber}</td><td>${e.id}</td><td>${gifts}</td>`;
     tbody.appendChild(tr);
   });
 }

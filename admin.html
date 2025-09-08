@@ -8,8 +8,21 @@
   <div id="admin-area" style="display:none;margin-top:12px">
     <button id="refresh">Refrescar</button>
     <button id="regen">Regenerar asignaciones (aleatorio)</button>
-    <pre id="jsonout" style="white-space:pre-wrap;background:#f7f7f7;padding:12px;border-radius:8px;margin-top:12px"></pre>
-  </div>
+    <table id="admin-table" border="1" style="border-collapse:collapse;margin-top:12px;display:none">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th># Generado</th>
+          <th>Opciones de regalo</th>
+          <th>Asignado a</th>
+          <th>Fecha</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+      </div>
 
 <script>
 let tokenPwd = null;
@@ -26,8 +39,27 @@ async function loadAdmin(){
   });
   if(res.status===401){ alert('Contraseña incorrecta'); return; }
   if(!res.ok){ alert('Error'); return; }
-  const json = await res.json();
-  document.getElementById('jsonout').textContent = JSON.stringify(json, null, 2);
+  const entries = await res.json();
+
+  const table = document.getElementById('admin-table');
+  const tbody = table.querySelector('tbody');
+  tbody.innerHTML = '';
+
+  entries.forEach(e=>{
+    const tr = document.createElement('tr');
+    const gifts = (e.gifts || []).join(', ');
+    tr.innerHTML = `
+      <td>${e.id}</td>
+      <td>${e.name}</td>
+      <td>${e.generatedNumber}</td>
+      <td>${gifts}</td>
+      <td>${e.assignedRecipient || '-'}</td>
+      <td>${new Date(e.createdAt).toLocaleString()}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+
+  table.style.display = 'table'; // mostrar tabla
 }
 
 document.getElementById('refresh').addEventListener('click', loadAdmin);
