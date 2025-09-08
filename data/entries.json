@@ -20,7 +20,7 @@
       "Teclado"
     ],
     "generatedNumber": 2,
-    "assignedRecipient": 1,
+    "assignedRecipient": 3,
     "createdAt": "2025-09-08T17:32:03.455Z"
   },
   {
@@ -31,7 +31,7 @@
       "Otra cosa"
     ],
     "generatedNumber": 3,
-    "assignedRecipient": null,
+    "assignedRecipient": 1,
     "createdAt": "2025-09-08T17:37:25.033Z"
   }
 ]
