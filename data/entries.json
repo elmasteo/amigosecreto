@@ -10,5 +10,17 @@
     "generatedNumber": 1,
     "assignedRecipient": null,
     "createdAt": "2025-09-08T14:41:30.846Z"
+  },
+  {
+    "id": 1757343027884,
+    "name": "pedro pazcal",
+    "gifts": [
+      "algo",
+      "otra cosa",
+      "nuevo"
+    ],
+    "generatedNumber": 2,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-08T14:50:27.288Z"
   }
 ]
