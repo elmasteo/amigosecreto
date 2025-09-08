@@ -20,7 +20,7 @@
       "nuevo"
     ],
     "generatedNumber": 2,
-    "assignedRecipient": 1,
+    "assignedRecipient": 3,
     "createdAt": "2025-09-08T14:50:27.288Z"
   },
   {
@@ -32,7 +32,7 @@
       "terreno"
     ],
     "generatedNumber": 3,
-    "assignedRecipient": null,
+    "assignedRecipient": 4,
     "createdAt": "2025-09-08T14:56:55.603Z"
   },
   {
@@ -44,7 +44,7 @@
       "apto"
     ],
     "generatedNumber": 4,
-    "assignedRecipient": null,
+    "assignedRecipient": 1,
     "createdAt": "2025-09-08T14:57:52.688Z"
   }
 ]
