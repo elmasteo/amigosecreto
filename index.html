@@ -41,6 +41,24 @@
     margin-bottom: 8px;
     font-weight: 500;
   }
+  .gift-wrapper {
+    position: relative;
+    margin-bottom: 12px;
+  }
+  .remove-gift {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    background: transparent;
+    border: none;
+    color: #ef4444;
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 1.1rem;
+  }
+  .remove-gift:hover {
+    color: #b91c1c;
+  }
   input {
     width: 100%;
     padding: 10px 12px;
@@ -107,9 +125,11 @@
       </label>
 
       <div id="gifts-container">
-        <label>Regalo 1
-          <input class="gift" required />
-        </label>
+        <div class="gift-wrapper">
+          <label>Regalo 1
+            <input class="gift" required />
+          </label>
+        </div>
       </div>
       <button id="add-gift" type="button">+ Agregar opción</button>
       <button type="submit">Enviar</button>
@@ -137,11 +157,34 @@ const addGiftBtn = document.getElementById('add-gift');
 const giftsContainer = document.getElementById('gifts-container');
 let giftCount = 1;
 
+function createGiftField(num){
+  const wrapper = document.createElement('div');
+  wrapper.className = 'gift-wrapper';
+  wrapper.innerHTML = `
+    <label>Regalo ${num}
+      <input class="gift" required />
+    </label>
+  `;
+
+  // botón eliminar (excepto para el primero)
+  if(num > 1){
+    const removeBtn = document.createElement('button');
+    removeBtn.type = "button";
+    removeBtn.className = "remove-gift";
+    removeBtn.textContent = "×";
+    removeBtn.addEventListener('click', ()=> {
+      wrapper.remove();
+    });
+    wrapper.appendChild(removeBtn);
+  }
+
+  return wrapper;
+}
+
 addGiftBtn.addEventListener('click', () => {
   giftCount++;
-  const label = document.createElement('label');
-  label.innerHTML = `Regalo ${giftCount} <input class="gift" />`;
-  giftsContainer.appendChild(label);
+  const newField = createGiftField(giftCount);
+  giftsContainer.appendChild(newField);
 });
 
 const form = document.getElementById('entry-form');
@@ -161,11 +204,9 @@ form.addEventListener('submit', async (e) => {
   });
   if(res.ok){
     document.getElementById('name').value='';
-    document.querySelectorAll('.gift').forEach((el,i)=> {
-      if(i>0) el.parentElement.remove();
-      else el.value='';
-    });
+    giftsContainer.innerHTML = ''; // reset
     giftCount = 1;
+    giftsContainer.appendChild(createGiftField(giftCount));
     loadPublicEntries();
   } else {
     const txt = await res.text();
