@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Amigo Secreto — Registro</title>
+<style>
+  body{font-family:system-ui,Segoe UI,Roboto,Arial;margin:24px;color:#111}
+  .card{max-width:900px;margin:0 auto;padding:18px;border-radius:10px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+  input,button,textarea{font-size:1rem;padding:8px;margin:6px 0}
+  table{width:100%;border-collapse:collapse;margin-top:12px}
+  th,td{border:1px solid #eee;padding:8px;text-align:left}
+  .small{font-size:.9rem;color:#555}
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Registro Amigo Secreto</h1>
+    <form id="entry-form">
+      <label>Nombre <input id="name" required /></label><br/>
+
+      <div id="gifts-container">
+        <label>Regalo 1 <input class="gift" required /></label>
+      </div>
+      <button id="add-gift" type="button">+ Agregar opción</button>
+      <button type="submit">Enviar</button>
+    </form>
+
+    <p class="small">Las entradas registradas aparecerán abajo. La asignación final (a quién le toca) es secreta y sólo está disponible en el panel admin.</p>
+
+    <table id="entries-table">
+      <thead><tr><th># generado</th><th>Nombre</th><th>Opciones de regalo</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+<script>
+const addGiftBtn = document.getElementById('add-gift');
+const giftsContainer = document.getElementById('gifts-container');
+let giftCount = 1;
+
+addGiftBtn.addEventListener('click', () => {
+  giftCount++;
+  const label = document.createElement('label');
+  label.innerHTML = `Regalo ${giftCount} <input class="gift" />`;
+  giftsContainer.appendChild(label);
+});
+
+const form = document.getElementById('entry-form');
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name = document.getElementById('name').value.trim();
+  const gifts = Array.from(document.querySelectorAll('.gift'))
+                    .map(i => i.value.trim())
+                    .filter(Boolean);
+  if(!name || gifts.length===0){ alert('Nombre y al menos 1 regalo.'); return; }
+
+  const body = { name, gifts };
+  const res = await fetch('/.netlify/functions/save-entry', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify(body)
+  });
+  if(res.ok){
+    document.getElementById('name').value='';
+    document.querySelectorAll('.gift').forEach((el,i)=> {
+      if(i>0) el.parentElement.remove();
+      else el.value='';
+    });
+    giftCount = 1;
+    loadPublicEntries();
+  } else {
+    const txt = await res.text();
+    alert('Error: '+txt);
+  }
+});
+
+async function loadPublicEntries(){
+  const res = await fetch('/.netlify/functions/get-public-entries');
+  if(!res.ok) return;
+  const entries = await res.json();
+  const tbody = document.querySelector('#entries-table tbody');
+  tbody.innerHTML = '';
+  entries.forEach(e=>{
+    const tr = document.createElement('tr');
+    const gifts = (e.gifts || []).join(', ');
+    tr.innerHTML = `<td>${e.generatedNumber}</td><td>${e.name}</td><td>${gifts}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+loadPublicEntries();
+</script>
+</body>
+</html>

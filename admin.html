@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="es">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
+<body style="font-family:system-ui;margin:24px">
+  <h1>Panel Admin — Amigo Secreto</h1>
+  <label>Contraseña: <input id="pwd" type="password"></label>
+  <button id="login">Entrar</button>
+  <div id="admin-area" style="display:none;margin-top:12px">
+    <button id="refresh">Refrescar</button>
+    <button id="regen">Regenerar asignaciones (aleatorio)</button>
+    <pre id="jsonout" style="white-space:pre-wrap;background:#f7f7f7;padding:12px;border-radius:8px;margin-top:12px"></pre>
+  </div>
+
+<script>
+let tokenPwd = null;
+document.getElementById('login').addEventListener('click', async ()=>{
+  tokenPwd = document.getElementById('pwd').value;
+  if(!tokenPwd) return alert('Ingresa contraseña');
+  await loadAdmin();
+  document.getElementById('admin-area').style.display='block';
+});
+
+async function loadAdmin(){
+  const res = await fetch('/.netlify/functions/get-admin-entries', {
+    headers:{ 'x-admin-password': tokenPwd }
+  });
+  if(res.status===401){ alert('Contraseña incorrecta'); return; }
+  if(!res.ok){ alert('Error'); return; }
+  const json = await res.json();
+  document.getElementById('jsonout').textContent = JSON.stringify(json, null, 2);
+}
+
+document.getElementById('refresh').addEventListener('click', loadAdmin);
+
+document.getElementById('regen').addEventListener('click', async ()=>{
+  // simple endpoint: call get-admin-entries with action=regen
+  const res = await fetch('/.netlify/functions/get-admin-entries?action=regen', {
+    method:'POST',
+    headers:{ 'x-admin-password': tokenPwd }
+  });
+  if(!res.ok){ alert('Error al regenerar'); return; }
+  await loadAdmin();
+});
+</script>
+</body>
+</html>
