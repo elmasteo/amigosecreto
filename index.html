@@ -155,36 +155,45 @@
 <script>
 const addGiftBtn = document.getElementById('add-gift');
 const giftsContainer = document.getElementById('gifts-container');
-let giftCount = 1;
 
-function createGiftField(num){
+function createGiftField(){
   const wrapper = document.createElement('div');
   wrapper.className = 'gift-wrapper';
   wrapper.innerHTML = `
-    <label>Regalo ${num}
+    <label>
+      <span class="gift-label"></span>
       <input class="gift" required />
     </label>
   `;
 
-  // botón eliminar (excepto para el primero)
-  if(num > 1){
-    const removeBtn = document.createElement('button');
-    removeBtn.type = "button";
-    removeBtn.className = "remove-gift";
-    removeBtn.textContent = "×";
-    removeBtn.addEventListener('click', ()=> {
-      wrapper.remove();
-    });
-    wrapper.appendChild(removeBtn);
-  }
+  const removeBtn = document.createElement('button');
+  removeBtn.type = "button";
+  removeBtn.className = "remove-gift";
+  removeBtn.textContent = "×";
+  removeBtn.addEventListener('click', ()=> {
+    wrapper.remove();
+    renumberGifts();
+  });
 
+  wrapper.appendChild(removeBtn);
   return wrapper;
 }
 
+function renumberGifts(){
+  const wrappers = giftsContainer.querySelectorAll('.gift-wrapper');
+  wrappers.forEach((wrapper, idx) => {
+    const label = wrapper.querySelector('.gift-label');
+    label.textContent = `Regalo ${idx+1}`;
+    // ocultar botón eliminar en el primero
+    const btn = wrapper.querySelector('.remove-gift');
+    btn.style.display = (idx === 0) ? 'none' : 'block';
+  });
+}
+
 addGiftBtn.addEventListener('click', () => {
-  giftCount++;
-  const newField = createGiftField(giftCount);
+  const newField = createGiftField();
   giftsContainer.appendChild(newField);
+  renumberGifts();
 });
 
 const form = document.getElementById('entry-form');
@@ -204,9 +213,9 @@ form.addEventListener('submit', async (e) => {
   });
   if(res.ok){
     document.getElementById('name').value='';
-    giftsContainer.innerHTML = ''; // reset
-    giftCount = 1;
-    giftsContainer.appendChild(createGiftField(giftCount));
+    giftsContainer.innerHTML = '';
+    giftsContainer.appendChild(createGiftField());
+    renumberGifts();
     loadPublicEntries();
   } else {
     const txt = await res.text();
@@ -228,7 +237,13 @@ async function loadPublicEntries(){
   });
 }
 
+// inicializar con un campo
+giftsContainer.innerHTML = '';
+giftsContainer.appendChild(createGiftField());
+renumberGifts();
+
 loadPublicEntries();
 </script>
+
 </body>
 </html>
