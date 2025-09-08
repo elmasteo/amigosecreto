@@ -10,5 +10,17 @@
     "generatedNumber": 1,
     "assignedRecipient": null,
     "createdAt": "2025-09-08T17:30:50.084Z"
+  },
+  {
+    "id": 1757352723953,
+    "name": "Estefania Sanchez",
+    "gifts": [
+      "Libro",
+      "Mouse",
+      "Teclado"
+    ],
+    "generatedNumber": 2,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-08T17:32:03.455Z"
   }
 ]
