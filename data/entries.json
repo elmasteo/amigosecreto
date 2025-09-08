@@ -34,5 +34,17 @@
     "generatedNumber": 3,
     "assignedRecipient": null,
     "createdAt": "2025-09-08T14:56:55.603Z"
+  },
+  {
+    "id": 1757343473138,
+    "name": "marco ruiz",
+    "gifts": [
+      "carro",
+      "casa",
+      "apto"
+    ],
+    "generatedNumber": 4,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-08T14:57:52.688Z"
   }
 ]
