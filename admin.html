@@ -1,28 +1,109 @@
 <!doctype html>
 <html lang="es">
-<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/></head>
-<body style="font-family:system-ui;margin:24px">
-  <h1>Panel Admin — Amigo Secreto</h1>
-  <label>Contraseña: <input id="pwd" type="password"></label>
-  <button id="login">Entrar</button>
-  <div id="admin-area" style="display:none;margin-top:12px">
-    <button id="refresh">Refrescar</button>
-    <button id="regen">Regenerar asignaciones (aleatorio)</button>
-    <table id="admin-table" border="1" style="border-collapse:collapse;margin-top:12px;display:none">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th># Generado</th>
-          <th>Opciones de regalo</th>
-          <th>Asignado a</th>
-          <th>Fecha</th>
-        </tr>
-      </thead>
-      <tbody></tbody>
-    </table>
-
-      </div>
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Admin — Amigo Secreto</title>
+<style>
+  :root {
+    --primary: #6c63ff;
+    --primary-hover: #574fd6;
+    --bg: #f9fafb;
+    --card-bg: #fff;
+    --border: #e5e7eb;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --radius: 12px;
+    --shadow: 0 8px 20px rgba(0,0,0,.06);
+  }
+  body {
+    font-family: system-ui, Segoe UI, Roboto, Arial;
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    padding: 32px;
+  }
+  .card {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+    border-radius: var(--radius);
+    background: var(--card-bg);
+    box-shadow: var(--shadow);
+  }
+  h1 {
+    margin-bottom: 16px;
+    font-size: 1.8rem;
+    color: var(--primary);
+  }
+  input {
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-right: 8px;
+  }
+  button {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 8px 4px 0 0;
+    transition: background 0.2s;
+  }
+  button:hover {
+    background: var(--primary-hover);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: #f3f4f6;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  tr:hover td {
+    background: #f9fafb;
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <h1>Panel Admin — Amigo Secreto</h1>
+    <div>
+      <input id="pwd" type="password" placeholder="Contraseña" />
+      <button id="login">Entrar</button>
+    </div>
+    <div id="admin-area" style="display:none;margin-top:20px">
+      <button id="refresh">Refrescar</button>
+      <button id="regen">Regenerar asignaciones</button>
+      <table id="admin-table" style="display:none">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th># Generado</th>
+            <th>Opciones de regalo</th>
+            <th>Asignado a</th>
+            <th>Fecha</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 
 <script>
 let tokenPwd = null;
@@ -59,13 +140,12 @@ async function loadAdmin(){
     tbody.appendChild(tr);
   });
 
-  table.style.display = 'table'; // mostrar tabla
+  table.style.display = 'table'; 
 }
 
 document.getElementById('refresh').addEventListener('click', loadAdmin);
 
 document.getElementById('regen').addEventListener('click', async ()=>{
-  // simple endpoint: call get-admin-entries with action=regen
   const res = await fetch('/.netlify/functions/get-admin-entries?action=regen', {
     method:'POST',
     headers:{ 'x-admin-password': tokenPwd }
