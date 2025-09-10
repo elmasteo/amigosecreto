@@ -56,9 +56,7 @@
     cursor: pointer;
     font-size: 1.1rem;
   }
-  .remove-gift:hover {
-    color: #b91c1c;
-  }
+  .remove-gift:hover { color: #b91c1c; }
   input {
     width: 100%;
     padding: 10px 12px;
@@ -78,16 +76,12 @@
     margin-top: 8px;
     transition: background 0.2s;
   }
-  button:hover {
-    background: var(--primary-hover);
-  }
+  button:hover { background: var(--primary-hover); }
   #add-gift {
     background: #e5e7eb;
     color: var(--text);
   }
-  #add-gift:hover {
-    background: #d1d5db;
-  }
+  #add-gift:hover { background: #d1d5db; }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -106,13 +100,48 @@
     font-weight: 600;
     color: var(--text-muted);
   }
-  tr:hover td {
-    background: #f9fafb;
+  tr:hover td { background: #f9fafb; }
+  .small { font-size: 0.9rem; color: var(--text-muted); margin-top: 8px; }
+
+  /* Modal */
+  .modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
   }
-  .small {
-    font-size: 0.9rem;
-    color: var(--text-muted);
-    margin-top: 8px;
+  .modal {
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: 24px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.25s ease;
+  }
+  .modal h2 {
+    color: var(--primary);
+    margin-bottom: 12px;
+  }
+  .modal p {
+    margin: 8px 0;
+    color: var(--text);
+  }
+  .modal strong {
+    font-size: 1.6rem;
+    color: #10b981;
+  }
+  .modal button {
+    margin-top: 16px;
+    width: 100%;
+  }
+  @keyframes fadeIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
   }
 </style>
 </head>
@@ -152,6 +181,17 @@
     </table>
   </div>
 
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal-backdrop">
+    <div class="modal">
+      <h2>¡Número Asignado!</h2>
+      <p>Este es tu número para el juego:</p>
+      <p><strong id="modal-number"></strong></p>
+      <p style="color:#b91c1c;">⚠️ Es muy importante que lo guardes y no lo olvides.</p>
+      <button id="close-modal">Entendido</button>
+    </div>
+  </div>
+
 <script>
 const addGiftBtn = document.getElementById('add-gift');
 const giftsContainer = document.getElementById('gifts-container');
@@ -165,7 +205,6 @@ function createGiftField(){
       <input class="gift" required />
     </label>
   `;
-
   const removeBtn = document.createElement('button');
   removeBtn.type = "button";
   removeBtn.className = "remove-gift";
@@ -174,7 +213,6 @@ function createGiftField(){
     wrapper.remove();
     renumberGifts();
   });
-
   wrapper.appendChild(removeBtn);
   return wrapper;
 }
@@ -212,7 +250,7 @@ form.addEventListener('submit', async (e) => {
   });
   if(res.ok){
     const data = await res.json();
-    alert(`🎉 Eres el #${data.generatedNumber}`);
+    showModal(data.generatedNumber);
     document.getElementById('name').value='';
     giftsContainer.innerHTML = '';
     giftsContainer.appendChild(createGiftField());
@@ -237,6 +275,15 @@ async function loadPublicEntries(){
     tbody.appendChild(tr);
   });
 }
+
+// Modal functions
+function showModal(number){
+  document.getElementById('modal-number').textContent = number;
+  document.getElementById('modal-backdrop').style.display = 'flex';
+}
+document.getElementById('close-modal').addEventListener('click', ()=>{
+  document.getElementById('modal-backdrop').style.display = 'none';
+});
 
 // inicializar con un campo
 giftsContainer.innerHTML = '';
