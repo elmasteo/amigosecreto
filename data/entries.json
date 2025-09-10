@@ -22,5 +22,17 @@
     "generatedNumber": 7,
     "assignedRecipient": 17,
     "createdAt": "2025-09-10T16:27:40.629Z"
+  },
+  {
+    "id": 1757521755376,
+    "name": "prueba nombre",
+    "gifts": [
+      "algo",
+      "otra cosa",
+      "nuevo"
+    ],
+    "generatedNumber": 38,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-10T16:29:14.784Z"
   }
 ]
