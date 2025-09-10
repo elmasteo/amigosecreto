@@ -49,26 +49,21 @@ exports.handler = async function(event){
       sha = file.sha;
     }
 
-    // build set of used generatedNumbers
-    const used = new Set(entries.map(e=>e.generatedNumber));
-    const maxParticipants = Math.max(entries.length + 1, 1);
-    // try generate a unique number between 1 and entries.length+1 (keeps compact)
-    let gen;
-    for(let i=0;i<50;i++){
-      const candidate = Math.floor(Math.random() * (entries.length + 1)) + 1;
-      if(!used.has(candidate)){ gen = candidate; break; }
+    // construir set de usados
+    const used = new Set(entries.map(e => e.generatedNumber));
+    const allNumbers = Array.from({length:50}, (_,i)=>i+1);
+    const free = allNumbers.filter(n => !used.has(n));
+    if(free.length === 0){
+      return { statusCode:400, body:'No hay más números disponibles' };
     }
-    if(!gen){
-      // fallback: find first free number
-      for(let i=1;;i++){ if(!used.has(i)){ gen = i; break; } }
-    }
+    const gen = free[Math.floor(Math.random() * free.length)];
 
     const newEntry = {
       id: Date.now() + Math.floor(Math.random()*1000),
       name,
       gifts,
       generatedNumber: gen,
-      assignedRecipient: null, // secret mapping - only set via admin/regenerate
+      assignedRecipient: null,
       createdAt: new Date().toISOString()
     };
     entries.push(newEntry);
@@ -76,7 +71,7 @@ exports.handler = async function(event){
     const contentBase64 = Buffer.from(JSON.stringify(entries, null, 2)).toString('base64');
     await putFile(contentBase64, `Add entry ${name}`, sha);
 
-    return { statusCode:200, body: JSON.stringify({ ok:true }) };
+    return { statusCode:200, body: JSON.stringify({ ok:true, generatedNumber: gen }) };
   } catch(err){
     console.error(err);
     return { statusCode:500, body: String(err.message) };

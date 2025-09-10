@@ -184,7 +184,6 @@ function renumberGifts(){
   wrappers.forEach((wrapper, idx) => {
     const label = wrapper.querySelector('.gift-label');
     label.textContent = `Regalo ${idx+1}`;
-    // ocultar botón eliminar en el primero
     const btn = wrapper.querySelector('.remove-gift');
     btn.style.display = (idx === 0) ? 'none' : 'block';
   });
@@ -212,6 +211,8 @@ form.addEventListener('submit', async (e) => {
     body: JSON.stringify(body)
   });
   if(res.ok){
+    const data = await res.json();
+    alert(`🎉 Eres el #${data.generatedNumber}`);
     document.getElementById('name').value='';
     giftsContainer.innerHTML = '';
     giftsContainer.appendChild(createGiftField());

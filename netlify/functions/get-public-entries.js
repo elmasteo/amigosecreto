@@ -15,13 +15,20 @@ async function getFile(){
   return r.json();
 }
 
+function shuffle(a){ 
+  for(let i=a.length-1;i>0;i--){ 
+    const j=Math.floor(Math.random()*(i+1)); 
+    [a[i],a[j]]=[a[j],a[i]]; 
+  } 
+  return a; 
+}
+
 exports.handler = async function(){
   try{
     const file = await getFile();
     if(!file) return { statusCode:200, body: JSON.stringify([]) };
     const buff = Buffer.from(file.content, file.encoding);
     const entries = JSON.parse(buff.toString());
-    // expose only safe fields
     const publicEntries = entries.map(e=>({
       id: e.id,
       gifts: e.gifts,
@@ -29,7 +36,7 @@ exports.handler = async function(){
       createdAt: e.createdAt,
       assignedRecipient: e.assignedRecipient
     }));
-    return { statusCode:200, body: JSON.stringify(publicEntries) };
+    return { statusCode:200, body: JSON.stringify(shuffle(publicEntries)) };
   } catch(err){
     console.error(err);
     return { statusCode:500, body: String(err.message) };
