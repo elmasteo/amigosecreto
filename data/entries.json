@@ -8,7 +8,7 @@
       "lote"
     ],
     "generatedNumber": 17,
-    "assignedRecipient": 38,
+    "assignedRecipient": 16,
     "createdAt": "2025-09-10T16:24:40.704Z"
   },
   {
@@ -44,7 +44,7 @@
       "prueba3"
     ],
     "generatedNumber": 16,
-    "assignedRecipient": null,
+    "assignedRecipient": 38,
     "createdAt": "2025-09-10T16:34:33.299Z"
   }
 ]
