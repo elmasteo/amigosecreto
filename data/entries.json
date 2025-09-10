@@ -34,5 +34,17 @@
     "generatedNumber": 38,
     "assignedRecipient": 7,
     "createdAt": "2025-09-10T16:29:14.784Z"
+  },
+  {
+    "id": 1757522074060,
+    "name": "carlos ramirez",
+    "gifts": [
+      "prueba",
+      "prueba2",
+      "prueba3"
+    ],
+    "generatedNumber": 16,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-10T16:34:33.299Z"
   }
 ]
