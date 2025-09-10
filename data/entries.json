@@ -10,5 +10,17 @@
     "generatedNumber": 17,
     "assignedRecipient": null,
     "createdAt": "2025-09-10T16:24:40.704Z"
+  },
+  {
+    "id": 1757521661620,
+    "name": "juan perez",
+    "gifts": [
+      "libro",
+      "joya",
+      "prueba"
+    ],
+    "generatedNumber": 7,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-10T16:27:40.629Z"
   }
 ]
