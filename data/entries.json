@@ -8,5 +8,17 @@
     "generatedNumber": 8,
     "assignedRecipient": null,
     "createdAt": "2025-09-12T20:13:44.357Z"
+  },
+  {
+    "id": 1757708027544,
+    "name": "David Diaz",
+    "gifts": [
+      "Libro - Cómo Repensar la Psicología: Bernard Guerin",
+      "Libro Sapiens: De animales a dioses – Yuval Noah Harari.",
+      "Bono regalo H&M o Decathlon"
+    ],
+    "generatedNumber": 37,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-12T20:13:47.327Z"
   }
 ]
