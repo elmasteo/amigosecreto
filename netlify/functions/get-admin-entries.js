@@ -17,7 +17,7 @@ async function getFile(){
 }
 async function putFile(contentBase64, message, sha){
   const url = `${BASE}/repos/${OWNER}/${REPO}/contents/${PATH}`;
-  const body = { message, content: contentBase64, MY_BRANCH: MY_BRANCH };
+  const body = { message, content: contentBase64, branch: MY_BRANCH };
   if(sha) body.sha = sha;
   const r = await fetch(url, {
     method:'PUT',
@@ -33,7 +33,6 @@ async function putFile(contentBase64, message, sha){
 
 function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
 
-// tries to assign a derangement of generatedNumbers (no one gets own number). If impossible, allows repeats but avoids self as much as possible.
 function assignRecipients(entries){
   const n = entries.length;
   if(n===0) return entries;
@@ -47,14 +46,11 @@ function assignRecipients(entries){
     }
     if(ok) break;
   }
-  // if not perfect derangement, try a simple rotation
   let allSelf = true;
   for(let i=0;i<n;i++) if(perm[i]!==numbers[i]) allSelf=false;
-  if(allSelf){
-    // rotate by 1
-    if(n>1) perm = numbers.slice(1).concat(numbers.slice(0,1));
+  if(allSelf && n>1){
+    perm = numbers.slice(1).concat(numbers.slice(0,1));
   }
-  // map
   return entries.map((e, idx)=> ({ ...e, assignedRecipient: perm[idx] }) );
 }
 
@@ -77,14 +73,32 @@ exports.handler = async function(event){
     }
 
     if(event.httpMethod === 'POST'){
-      const qs = new URLSearchParams(event.queryStringParameters);
-      const action = (event.queryStringParameters && event.queryStringParameters.action) || '';
+      const qs = event.queryStringParameters || {};
+      const action = qs.action || '';
+
       if(action === 'regen'){
         entries = assignRecipients(entries);
         const contentBase64 = Buffer.from(JSON.stringify(entries, null, 2)).toString('base64');
         await putFile(contentBase64, 'Regenerate secret assignments', sha);
         return { statusCode:200, body: JSON.stringify({ ok:true }) };
       }
+
+      if(action === 'delete'){
+        const id = qs.id;
+        entries = entries.filter(e => e.id !== id);
+        const contentBase64 = Buffer.from(JSON.stringify(entries, null, 2)).toString('base64');
+        await putFile(contentBase64, `Delete entry ${id}`, sha);
+        return { statusCode:200, body: JSON.stringify({ ok:true }) };
+      }
+
+      if(action === 'edit'){
+        const body = JSON.parse(event.body || "{}");
+        entries = entries.map(e => e.id === body.id ? { ...e, name: body.name, gifts: body.gifts } : e);
+        const contentBase64 = Buffer.from(JSON.stringify(entries, null, 2)).toString('base64');
+        await putFile(contentBase64, `Edit entry ${body.id}`, sha);
+        return { statusCode:200, body: JSON.stringify({ ok:true }) };
+      }
+
       return { statusCode:400, body:'unknown action' };
     }
 

@@ -36,11 +36,13 @@
     font-size: 1.8rem;
     color: var(--primary);
   }
-  input {
+  input, textarea {
     padding: 8px 12px;
     border: 1px solid var(--border);
     border-radius: var(--radius);
-    margin-right: 8px;
+    margin: 4px 0;
+    width: 100%;
+    box-sizing: border-box;
   }
   button {
     background: var(--primary);
@@ -77,6 +79,46 @@
   tr:hover td {
     background: #f9fafb;
   }
+
+  /* Modal */
+  .modal {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  .modal-content {
+    background: var(--card-bg);
+    padding: 24px;
+    border-radius: var(--radius);
+    width: 400px;
+    max-width: 90%;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.2s ease-in-out;
+  }
+  .modal-header {
+    font-size: 1.2rem;
+    margin-bottom: 12px;
+    color: var(--primary);
+  }
+  .modal-actions {
+    margin-top: 12px;
+    text-align: right;
+  }
+  .close-btn {
+    background: #e5e7eb;
+    color: var(--text);
+  }
+  .close-btn:hover {
+    background: #d1d5db;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
 </style>
 </head>
 <body>
@@ -98,6 +140,7 @@
             <th>Opciones de regalo</th>
             <th>Asignado a</th>
             <th>Fecha</th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody></tbody>
@@ -105,8 +148,26 @@
     </div>
   </div>
 
+  <!-- Modal edición -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">Editar Registro</div>
+      <input type="hidden" id="editId" />
+      <label>Nombre</label>
+      <input type="text" id="editName" />
+      <label>Regalos (separados por coma)</label>
+      <textarea id="editGifts"></textarea>
+      <div class="modal-actions">
+        <button class="close-btn" onclick="closeModal()">Cancelar</button>
+        <button onclick="saveEdit()">Guardar</button>
+      </div>
+    </div>
+  </div>
+
 <script>
 let tokenPwd = null;
+let currentEditId = null;
+
 document.getElementById('login').addEventListener('click', async ()=>{
   tokenPwd = document.getElementById('pwd').value;
   if(!tokenPwd) return alert('Ingresa contraseña');
@@ -127,8 +188,8 @@ async function loadAdmin(){
   tbody.innerHTML = '';
 
   entries.forEach(e=>{
-    const tr = document.createElement('tr');
     const gifts = (e.gifts || []).join(', ');
+    const tr = document.createElement('tr');
     tr.innerHTML = `
       <td>${e.id}</td>
       <td>${e.name}</td>
@@ -136,6 +197,10 @@ async function loadAdmin(){
       <td>${gifts}</td>
       <td>${e.assignedRecipient || '-'}</td>
       <td>${new Date(e.createdAt).toLocaleString()}</td>
+      <td>
+        <button onclick="openEditModal('${e.id}', '${e.name}', '${gifts.replace(/'/g,"&#39;")}')">Editar</button>
+        <button onclick="deleteEntry('${e.id}')">Eliminar</button>
+      </td>
     `;
     tbody.appendChild(tr);
   });
@@ -153,6 +218,47 @@ document.getElementById('regen').addEventListener('click', async ()=>{
   if(!res.ok){ alert('Error al regenerar'); return; }
   await loadAdmin();
 });
+
+async function deleteEntry(id) {
+  if (!confirm("¿Seguro que deseas eliminar este registro?")) return;
+  const res = await fetch(`/.netlify/functions/get-admin-entries?action=delete&id=${id}`, {
+    method: "POST",
+    headers: { "x-admin-password": tokenPwd }
+  });
+  if (!res.ok) { alert("Error al eliminar"); return; }
+  await loadAdmin();
+}
+
+/* --- Modal edición --- */
+function openEditModal(id, name, gifts) {
+  currentEditId = id;
+  document.getElementById("editId").value = id;
+  document.getElementById("editName").value = name;
+  document.getElementById("editGifts").value = gifts;
+  document.getElementById("editModal").style.display = "flex";
+}
+
+function closeModal() {
+  document.getElementById("editModal").style.display = "none";
+}
+
+async function saveEdit() {
+  const id = document.getElementById("editId").value;
+  const name = document.getElementById("editName").value.trim();
+  const gifts = document.getElementById("editGifts").value.split(",").map(r=>r.trim()).filter(Boolean);
+
+  const res = await fetch(`/.netlify/functions/get-admin-entries?action=edit`, {
+    method: "POST",
+    headers: {
+      "x-admin-password": tokenPwd,
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ id, name, gifts })
+  });
+  if (!res.ok) { alert("Error al editar"); return; }
+  closeModal();
+  await loadAdmin();
+}
 </script>
 </body>
 </html>
