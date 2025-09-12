@@ -196,13 +196,12 @@ async function loadAdmin(){
           data-id="${e.id}"
           data-name="${e.name}"
           data-gifts="${gifts}">Editar</button>
-        <button onclick="deleteEntry('${e.id}')">Eliminar</button>
+        <button onclick="deleteEntry(${e.id})">Eliminar</button>
       </td>
     `;
     tbody.appendChild(tr);
   });
 
-  // Attach safe edit event
   document.querySelectorAll('.edit-btn').forEach(btn=>{
     btn.addEventListener('click', ()=>{
       openEditModal(btn.dataset.id, btn.dataset.name, btn.dataset.gifts);
@@ -224,6 +223,7 @@ document.getElementById('regen').addEventListener('click', async ()=>{
 });
 
 async function deleteEntry(id) {
+  id = Number(id);
   if (!confirm("¿Seguro que deseas eliminar este registro?")) return;
   const res = await fetch(`/.netlify/functions/get-admin-entries?action=delete&id=${id}`, {
     method: "POST",
@@ -235,7 +235,7 @@ async function deleteEntry(id) {
 
 /* --- Modal edición --- */
 function openEditModal(id, name, gifts) {
-  currentEditId = id;
+  currentEditId = Number(id);
   document.getElementById("editId").value = id;
   document.getElementById("editName").value = name;
   document.getElementById("editGifts").value = gifts;
@@ -247,7 +247,7 @@ function closeModal() {
 }
 
 async function saveEdit() {
-  const id = document.getElementById("editId").value;
+  const id = Number(document.getElementById("editId").value);
   const name = document.getElementById("editName").value.trim();
   const gifts = document.getElementById("editGifts").value.split(",").map(r=>r.trim()).filter(Boolean);
 

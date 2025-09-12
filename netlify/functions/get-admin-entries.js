@@ -15,6 +15,7 @@ async function getFile(){
   if(!r.ok) throw new Error('Error leyendo archivo: '+r.status);
   return r.json();
 }
+
 async function putFile(contentBase64, message, sha){
   const url = `${BASE}/repos/${OWNER}/${REPO}/contents/${PATH}`;
   const body = { message, content: contentBase64, branch: MY_BRANCH };
@@ -84,7 +85,7 @@ exports.handler = async function(event){
       }
 
       if(action === 'delete'){
-        const id = qs.id;
+        const id = Number(qs.id);
         entries = entries.filter(e => e.id !== id);
         const contentBase64 = Buffer.from(JSON.stringify(entries, null, 2)).toString('base64');
         await putFile(contentBase64, `Delete entry ${id}`, sha);
@@ -93,9 +94,10 @@ exports.handler = async function(event){
 
       if(action === 'edit'){
         const body = JSON.parse(event.body || "{}");
-        entries = entries.map(e => e.id === body.id ? { ...e, name: body.name, gifts: body.gifts } : e);
+        const id = Number(body.id);
+        entries = entries.map(e => e.id === id ? { ...e, name: body.name, gifts: body.gifts } : e);
         const contentBase64 = Buffer.from(JSON.stringify(entries, null, 2)).toString('base64');
-        await putFile(contentBase64, `Edit entry ${body.id}`, sha);
+        await putFile(contentBase64, `Edit entry ${id}`, sha);
         return { statusCode:200, body: JSON.stringify({ ok:true }) };
       }
 
