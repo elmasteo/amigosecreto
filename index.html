@@ -145,16 +145,58 @@
   }
 
   /* Responsive */
-  @media (max-width: 600px) {
-    body { padding: 8px; }
-    .card { padding: 16px; }
-    h1 { font-size: 1.4rem; }
-    th, td { padding: 8px; font-size: 0.85rem; }
-    input, button { font-size: 0.9rem; padding: 8px 10px; }
-    .modal { padding: 16px; }
-    .modal h2 { font-size: 1.2rem; }
-    .modal strong { font-size: 1.3rem; }
+@media (max-width: 600px) {
+  body { padding: 8px; }
+  .card { padding: 16px; }
+  h1 { font-size: 1.4rem; }
+
+  /* Inputs y botones más cómodos */
+  input, button {
+    font-size: 0.9rem;
+    padding: 10px;
+    width: 100%; /* Ocupan todo el ancho */
   }
+
+  /* Ajustar tabla con scroll horizontal */
+  table {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+    border: 0;
+  }
+  table thead {
+    display: none; /* Ocultamos encabezados en pantallas pequeñas */
+  }
+  table tbody, table tr, table td {
+    display: block;
+    width: 100%;
+  }
+  table tr {
+    margin-bottom: 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 8px;
+    background: #fff;
+  }
+  table td {
+    border: none;
+    padding: 6px 0;
+    font-size: 0.9rem;
+  }
+  table td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    display: block;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+  }
+
+  /* Modal */
+  .modal { padding: 16px; }
+  .modal h2 { font-size: 1.2rem; }
+  .modal strong { font-size: 1.3rem; }
+}
+
 </style>
 </head>
 <body>
@@ -283,7 +325,12 @@ async function loadPublicEntries(){
   entries.forEach(e=>{
     const tr = document.createElement('tr');
     const gifts = (e.gifts || []).join(', ');
-    tr.innerHTML = `<td>${e.generatedNumber}</td><td>${e.id}</td><td>${gifts}</td><td>${e.assignedRecipient}</td>`;
+    tr.innerHTML = `
+  <td data-label="# Generado">${e.generatedNumber}</td>
+  <td data-label="ID">${e.id}</td>
+  <td data-label="Opciones de regalo">${gifts}</td>
+  <td data-label="# Asignado">${e.assignedRecipient}</td>
+`;
     tbody.appendChild(tr);
   });
 }
