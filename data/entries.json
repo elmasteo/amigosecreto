@@ -20,5 +20,17 @@
     "generatedNumber": 37,
     "assignedRecipient": null,
     "createdAt": "2025-09-12T20:13:47.327Z"
+  },
+  {
+    "id": 1757709432589,
+    "name": "Juan Pablo Gordillo",
+    "gifts": [
+      "Dulces, chocolates",
+      "Libro - \"El arte de no amargarse la vida\" de Rafael Santandreu",
+      "Bono de lo que sea, se agradece."
+    ],
+    "generatedNumber": 41,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-12T20:37:12.540Z"
   }
 ]
