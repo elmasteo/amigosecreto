@@ -10,5 +10,17 @@
     "generatedNumber": 1,
     "assignedRecipient": null,
     "createdAt": "2025-09-12T20:03:24.372Z"
+  },
+  {
+    "id": 1757707453182,
+    "name": "brad pitt",
+    "gifts": [
+      "libro",
+      "juego de mesa",
+      "otra cosa"
+    ],
+    "generatedNumber": 46,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-12T20:04:12.952Z"
   }
 ]
