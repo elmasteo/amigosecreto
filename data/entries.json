@@ -8,7 +8,7 @@
       "apto"
     ],
     "generatedNumber": 1,
-    "assignedRecipient": null,
+    "assignedRecipient": 46,
     "createdAt": "2025-09-12T20:03:24.372Z"
   },
   {
@@ -20,7 +20,7 @@
       "otra cosa"
     ],
     "generatedNumber": 46,
-    "assignedRecipient": null,
+    "assignedRecipient": 1,
     "createdAt": "2025-09-12T20:04:12.952Z"
   }
 ]
