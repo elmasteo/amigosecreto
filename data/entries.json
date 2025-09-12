@@ -54,5 +54,15 @@
     "generatedNumber": 48,
     "assignedRecipient": null,
     "createdAt": "2025-09-12T21:09:10.369Z"
+  },
+  {
+    "id": 1757714363712,
+    "name": "OSCAR RINCON",
+    "gifts": [
+      "Libro: Caballo de Troya #1"
+    ],
+    "generatedNumber": 34,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-12T21:59:22.782Z"
   }
 ]
