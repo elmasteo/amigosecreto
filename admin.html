@@ -55,9 +55,7 @@
     margin: 8px 4px 0 0;
     transition: background 0.2s;
   }
-  button:hover {
-    background: var(--primary-hover);
-  }
+  button:hover { background: var(--primary-hover); }
   table {
     width: 100%;
     border-collapse: collapse;
@@ -76,9 +74,7 @@
     font-weight: 600;
     color: var(--text-muted);
   }
-  tr:hover td {
-    background: #f9fafb;
-  }
+  tr:hover td { background: #f9fafb; }
 
   /* Modal */
   .modal {
@@ -112,9 +108,7 @@
     background: #e5e7eb;
     color: var(--text);
   }
-  .close-btn:hover {
-    background: #d1d5db;
-  }
+  .close-btn:hover { background: #d1d5db; }
   @keyframes fadeIn {
     from { opacity: 0; transform: scale(0.95); }
     to { opacity: 1; transform: scale(1); }
@@ -198,11 +192,21 @@ async function loadAdmin(){
       <td>${e.assignedRecipient || '-'}</td>
       <td>${new Date(e.createdAt).toLocaleString()}</td>
       <td>
-        <button onclick="openEditModal('${e.id}', '${e.name}', '${gifts.replace(/'/g,"&#39;")}')">Editar</button>
+        <button class="edit-btn"
+          data-id="${e.id}"
+          data-name="${e.name}"
+          data-gifts="${gifts}">Editar</button>
         <button onclick="deleteEntry('${e.id}')">Eliminar</button>
       </td>
     `;
     tbody.appendChild(tr);
+  });
+
+  // Attach safe edit event
+  document.querySelectorAll('.edit-btn').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      openEditModal(btn.dataset.id, btn.dataset.name, btn.dataset.gifts);
+    });
   });
 
   table.style.display = 'table'; 
