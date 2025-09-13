@@ -95,5 +95,17 @@
     "generatedNumber": 50,
     "assignedRecipient": null,
     "createdAt": "2025-09-13T16:00:20.359Z"
+  },
+  {
+    "id": 1757789603158,
+    "name": "Estefania Sanchez",
+    "gifts": [
+      "Crema corporal/manos dulce",
+      "Pañoleta de seda/satín con colores básicos",
+      "Accesorios dorados sencillos"
+    ],
+    "generatedNumber": 20,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-13T18:53:22.525Z"
   }
 ]
