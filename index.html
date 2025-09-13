@@ -145,16 +145,30 @@
   }
 
   /* Responsive */
+/* Responsive */
 @media (max-width: 600px) {
   body { padding: 8px; }
   .card { padding: 16px; }
   h1 { font-size: 1.4rem; }
 
   /* Inputs y botones más cómodos */
-  input, button {
+  input, 
+  button:not(.remove-gift) {
     font-size: 0.9rem;
     padding: 10px;
     width: 100%; /* Ocupan todo el ancho */
+  }
+
+  /* Asegurar que el botón de eliminar regalo nunca se estire */
+  .remove-gift {
+    position: absolute;
+    right: 8px;
+    top: 8px;
+    width: auto;
+    height: auto;
+    padding: 0;
+    font-size: 1.2rem;
+    line-height: 1;
   }
 
   /* Ajustar tabla con scroll horizontal */
@@ -165,7 +179,7 @@
     border: 0;
   }
   table thead {
-    display: none; /* Ocultamos encabezados en pantallas pequeñas */
+    display: none;
   }
   table tbody, table tr, table td {
     display: block;
@@ -190,17 +204,7 @@
     color: var(--text-muted);
     margin-bottom: 4px;
   }
-.remove-gift {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    background: transparent;
-    border: none;
-    color: #ef4444;
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 1.1rem;
-  }
+
   /* Modal */
   .modal { padding: 16px; }
   .modal h2 { font-size: 1.2rem; }
