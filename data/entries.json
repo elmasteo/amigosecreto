@@ -84,5 +84,15 @@
     "generatedNumber": 47,
     "assignedRecipient": null,
     "createdAt": "2025-09-13T03:04:44.374Z"
+  },
+  {
+    "id": 1757779220967,
+    "name": "Josué zarate",
+    "gifts": [
+      "Hoodie de color verde oscuro talla M, bono regalo Zara , pull o HM"
+    ],
+    "generatedNumber": 50,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-13T16:00:20.359Z"
   }
 ]
