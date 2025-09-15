@@ -209,15 +209,5 @@
     "generatedNumber": 28,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T20:07:27.767Z"
-  },
-  {
-    "id": 1757968060030,
-    "name": "Prueba",
-    "gifts": [
-      "Prueba"
-    ],
-    "generatedNumber": 15,
-    "assignedRecipient": null,
-    "createdAt": "2025-09-15T20:27:39.437Z"
   }
 ]
