@@ -156,5 +156,18 @@
     "generatedNumber": 39,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T15:59:09.738Z"
+  },
+  {
+    "id": 1757951950960,
+    "name": "Katherine Deliso",
+    "gifts": [
+      "Bolso",
+      "Rompecabezas de más de 700 poezas",
+      "Medias y maquillaje",
+      "Cositas para la casa"
+    ],
+    "generatedNumber": 17,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T15:59:10.503Z"
   }
 ]
