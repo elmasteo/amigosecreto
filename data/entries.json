@@ -213,5 +213,17 @@
     "generatedNumber": 28,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T20:07:27.767Z"
+  },
+  {
+    "id": 1757979086267,
+    "name": "Natalia Fierro",
+    "gifts": [
+      "Bloqueador Roche Posay anthelios uv mune 400 fluido invisible",
+      "Set de cocteleria",
+      "Hamaca para gato"
+    ],
+    "generatedNumber": 18,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T23:31:25.893Z"
   }
 ]
