@@ -120,5 +120,18 @@
     "generatedNumber": 29,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T13:29:52.950Z"
+  },
+  {
+    "id": 1757949115852,
+    "name": "Caterin Velasquez",
+    "gifts": [
+      "Cargador Iphone 14 Pro",
+      "Bono Falabella",
+      "Crema Hidratante Vichy Mineral 89 x50ml",
+      "Mouse ergonómico"
+    ],
+    "generatedNumber": 4,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T15:11:55.451Z"
   }
 ]
