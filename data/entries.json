@@ -176,5 +176,15 @@
     "generatedNumber": 17,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T16:59:01.622Z"
+  },
+  {
+    "id": 1757955949359,
+    "name": "Carlos Patarroyo",
+    "gifts": [
+      "Hoodie o camiseta de cualquier banda de rock talla M, Bono crepes"
+    ],
+    "generatedNumber": 26,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T17:05:48.499Z"
   }
 ]
