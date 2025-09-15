@@ -77,6 +77,10 @@
     transition: background 0.2s;
   }
   button:hover { background: var(--primary-hover); }
+  button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
   #add-gift {
     background: #e5e7eb;
     color: var(--text);
@@ -144,59 +148,38 @@
     to { transform: translateY(0); opacity: 1; }
   }
 
+  /* Spinner */
+  .spinner-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(255,255,255,0.7);
+    z-index: 2000;
+    align-items: center;
+    justify-content: center;
+  }
+  .spinner {
+    border: 6px solid #f3f3f3;
+    border-top: 6px solid var(--primary);
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    animation: spin 1s linear infinite;
+  }
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
   /* Responsive */
-@media (max-width: 600px) {
-  body { padding: 8px; }
-  .card { padding: 16px; }
-  h1 { font-size: 1.4rem; }
-
-  /* Inputs y botones más cómodos */
-  input, button {
-    font-size: 0.9rem;
-    padding: 10px;
-    width: 100%; /* Ocupan todo el ancho */
+  @media (max-width: 600px) {
+    body { padding: 8px; }
+    .card { padding: 16px; }
+    h1 { font-size: 1.4rem; }
+    input, button { font-size: 0.9rem; padding: 10px; width: 100%; }
+    .modal { padding: 16px; }
+    .modal h2 { font-size: 1.2rem; }
+    .modal strong { font-size: 1.3rem; }
   }
-
-  /* Ajustar tabla con scroll horizontal */
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    border: 0;
-  }
-  table thead {
-    display: none; /* Ocultamos encabezados en pantallas pequeñas */
-  }
-  table tbody, table tr, table td {
-    display: block;
-    width: 100%;
-  }
-  table tr {
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 8px;
-    background: #fff;
-  }
-  table td {
-    border: none;
-    padding: 6px 0;
-    font-size: 0.9rem;
-  }
-  table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    display: block;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-  }
-
-  /* Modal */
-  .modal { padding: 16px; }
-  .modal h2 { font-size: 1.2rem; }
-  .modal strong { font-size: 1.3rem; }
-}
-
 </style>
 </head>
 <body>
@@ -215,7 +198,7 @@
         </div>
       </div>
       <button id="add-gift" type="button">+ Agregar opción</button>
-      <button type="submit">Enviar</button>
+      <button id="submit-btn" type="submit">Enviar</button>
     </form>
 
     <p class="small">
@@ -226,7 +209,6 @@
       <thead>
         <tr>
           <th># Generado</th>
-          <th>ID</th>
           <th>Opciones de regalo</th>
           <th># Asignado</th>
         </tr>
@@ -246,9 +228,16 @@
     </div>
   </div>
 
+  <!-- Spinner -->
+  <div class="spinner-backdrop" id="spinner-backdrop">
+    <div class="spinner"></div>
+  </div>
+
 <script>
 const addGiftBtn = document.getElementById('add-gift');
 const giftsContainer = document.getElementById('gifts-container');
+const submitBtn = document.getElementById('submit-btn');
+const spinnerBackdrop = document.getElementById('spinner-backdrop');
 
 function createGiftField(){
   const wrapper = document.createElement('div');
@@ -296,23 +285,35 @@ form.addEventListener('submit', async (e) => {
                     .filter(Boolean);
   if(!name || gifts.length===0){ alert('Nombre y al menos 1 regalo.'); return; }
 
-  const body = { name, gifts };
-  const res = await fetch('/.netlify/functions/save-entry', {
-    method:'POST',
-    headers:{ 'Content-Type':'application/json' },
-    body: JSON.stringify(body)
-  });
-  if(res.ok){
-    const data = await res.json();
-    showModal(data.generatedNumber);
-    document.getElementById('name').value='';
-    giftsContainer.innerHTML = '';
-    giftsContainer.appendChild(createGiftField());
-    renumberGifts();
-    loadPublicEntries();
-  } else {
-    const txt = await res.text();
-    alert('Error: '+txt);
+  // Mostrar spinner y deshabilitar botón
+  spinnerBackdrop.style.display = 'flex';
+  submitBtn.disabled = true;
+
+  try {
+    const body = { name, gifts };
+    const res = await fetch('/.netlify/functions/save-entry', {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify(body)
+    });
+    if(res.ok){
+      const data = await res.json();
+      showModal(data.generatedNumber);
+      document.getElementById('name').value='';
+      giftsContainer.innerHTML = '';
+      giftsContainer.appendChild(createGiftField());
+      renumberGifts();
+      loadPublicEntries();
+    } else {
+      const txt = await res.text();
+      alert('Error: '+txt);
+    }
+  } catch (err) {
+    alert('Error de red');
+  } finally {
+    // Ocultar spinner y habilitar botón
+    spinnerBackdrop.style.display = 'none';
+    submitBtn.disabled = false;
   }
 });
 
@@ -326,11 +327,10 @@ async function loadPublicEntries(){
     const tr = document.createElement('tr');
     const gifts = (e.gifts || []).join(', ');
     tr.innerHTML = `
-  <td data-label="# Generado">${e.generatedNumber}</td>
-  <td data-label="ID">${e.id}</td>
-  <td data-label="Opciones de regalo">${gifts}</td>
-  <td data-label="# Asignado">${e.assignedRecipient}</td>
-`;
+      <td data-label="# Generado">${e.generatedNumber}</td>
+      <td data-label="Opciones de regalo">${gifts}</td>
+      <td data-label="# Asignado">${e.assignedRecipient}</td>
+    `;
     tbody.appendChild(tr);
   });
 }
@@ -351,6 +351,5 @@ renumberGifts();
 
 loadPublicEntries();
 </script>
-
 </body>
 </html>
