@@ -196,5 +196,18 @@
     "generatedNumber": 5,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T17:23:47.710Z"
+  },
+  {
+    "id": 1757966848079,
+    "name": "santiago gomez",
+    "gifts": [
+      "Mouse ergonómico inalámbrico",
+      "Rodillos para bicicleta",
+      "Jogger para hombre talla M",
+      "Billetera para hombre con cremallera"
+    ],
+    "generatedNumber": 28,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T20:07:27.767Z"
   }
 ]
