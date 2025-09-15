@@ -133,5 +133,15 @@
     "generatedNumber": 4,
     "assignedRecipient": null,
     "createdAt": "2025-09-15T15:11:55.451Z"
+  },
+  {
+    "id": 1757951108701,
+    "name": "Hugo Carlos Hernández Durango",
+    "gifts": [
+      "Bono Zara, o esqueleto talla S para ir al gimnasio."
+    ],
+    "generatedNumber": 43,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T15:45:08.310Z"
   }
 ]
