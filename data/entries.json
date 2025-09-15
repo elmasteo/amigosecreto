@@ -107,5 +107,18 @@
     "generatedNumber": 20,
     "assignedRecipient": null,
     "createdAt": "2025-09-13T18:53:22.525Z"
+  },
+  {
+    "id": 1757942993770,
+    "name": "Miguel Alejandro Gomez Garzon",
+    "gifts": [
+      "Bono de Adidas",
+      "Bono Rootco",
+      "Bono Decatlon",
+      "Endulzada chocolates amargos o bajos en dulce"
+    ],
+    "generatedNumber": 29,
+    "assignedRecipient": null,
+    "createdAt": "2025-09-15T13:29:52.950Z"
   }
 ]
