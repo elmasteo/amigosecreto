@@ -170,15 +170,7 @@
     to { transform: rotate(360deg); }
   }
   
-  @media (max-width: 600px) {
-    body { padding: 8px; }
-    .card { padding: 16px; }
-    h1 { font-size: 1.4rem; }
-    input, button { font-size: 0.9rem; padding: 10px; width: 100%; }
-    .modal { padding: 16px; }
-    .modal h2 { font-size: 1.2rem; }
-    .modal strong { font-size: 1.3rem; }
-  }
+  @media (max-width: 600px) { body { padding: 8px; } .card { padding: 16px; } h1 { font-size: 1.4rem; } input, button { font-size: 0.9rem; padding: 10px; width: 100%; } .modal { padding: 16px; } .modal h2 { font-size: 1.2rem; } .modal strong { font-size: 1.3rem; } } /* Responsive */ @media (max-width: 600px) { body { padding: 8px; } .card { padding: 16px; } h1 { font-size: 1.4rem; } /* Inputs y botones más cómodos */ input, button:not(.remove-gift) { font-size: 0.9rem; padding: 10px; width: 100%; /* Ocupan todo el ancho */ } /* Asegurar que el botón de eliminar regalo nunca se estire */ .remove-gift { position: absolute; right: 8px; top: 8px; width: auto; height: auto; padding: 0; font-size: 1.2rem; line-height: 1; } /* Ajustar tabla con scroll horizontal */ table { display: block; width: 100%; overflow-x: auto; border: 0; } table thead { display: none; } table tbody, table tr, table td { display: block; width: 100%; } table tr { margin-bottom: 12px; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; background: #fff; } table td { border: none; padding: 6px 0; font-size: 0.9rem; } table td::before { content: attr(data-label); font-weight: 600; display: block; color: var(--text-muted); margin-bottom: 4px; } /* Modal */ .modal { padding: 16px; } .modal h2 { font-size: 1.2rem; } .modal strong { font-size: 1.3rem; } }
 </style>
 </head>
 <body>
