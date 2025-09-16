@@ -179,72 +179,6 @@
     .modal h2 { font-size: 1.2rem; }
     .modal strong { font-size: 1.3rem; }
   }
-/* Responsive */
-@media (max-width: 600px) {
-  body { padding: 8px; }
-  .card { padding: 16px; }
-  h1 { font-size: 1.4rem; }
-
-  /* Inputs y botones más cómodos */
-  input, 
-  button:not(.remove-gift) {
-    font-size: 0.9rem;
-    padding: 10px;
-    width: 100%; /* Ocupan todo el ancho */
-  }
-
-  /* Asegurar que el botón de eliminar regalo nunca se estire */
-  .remove-gift {
-    position: absolute;
-    right: 8px;
-    top: 8px;
-    width: auto;
-    height: auto;
-    padding: 0;
-    font-size: 1.2rem;
-    line-height: 1;
-  }
-
-  /* Ajustar tabla con scroll horizontal */
-  table {
-    display: block;
-    width: 100%;
-    overflow-x: auto;
-    border: 0;
-  }
-  table thead {
-    display: none;
-  }
-  table tbody, table tr, table td {
-    display: block;
-    width: 100%;
-  }
-  table tr {
-    margin-bottom: 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 8px;
-    background: #fff;
-  }
-  table td {
-    border: none;
-    padding: 6px 0;
-    font-size: 0.9rem;
-  }
-  table td::before {
-    content: attr(data-label);
-    font-weight: 600;
-    display: block;
-    color: var(--text-muted);
-    margin-bottom: 4px;
-  }
-
-  /* Modal */
-  .modal { padding: 16px; }
-  .modal h2 { font-size: 1.2rem; }
-  .modal strong { font-size: 1.3rem; }
-}
-
 </style>
 </head>
 <body>
@@ -273,9 +207,9 @@
     <table id="entries-table">
       <thead>
         <tr>
-          <th># Generado</th>
-          <th>Opciones de regalo</th>
+          <th>Tú número</th>
           <th># Asignado</th>
+          <th>Opción de regalo asignado</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -299,6 +233,8 @@
   </div>
 
 <script>
+
+const registroCerrado = true;
 const addGiftBtn = document.getElementById('add-gift');
 const giftsContainer = document.getElementById('gifts-container');
 const submitBtn = document.getElementById('submit-btn');
@@ -350,7 +286,6 @@ form.addEventListener('submit', async (e) => {
                     .filter(Boolean);
   if(!name || gifts.length===0){ alert('Nombre y al menos 1 regalo.'); return; }
 
-  // Mostrar spinner y deshabilitar botón
   spinnerBackdrop.style.display = 'flex';
   submitBtn.disabled = true;
 
@@ -376,7 +311,6 @@ form.addEventListener('submit', async (e) => {
   } catch (err) {
     alert('Error de red');
   } finally {
-    // Ocultar spinner y habilitar botón
     spinnerBackdrop.style.display = 'none';
     submitBtn.disabled = false;
   }
@@ -388,13 +322,18 @@ async function loadPublicEntries(){
   const entries = await res.json();
   const tbody = document.querySelector('#entries-table tbody');
   tbody.innerHTML = '';
+
   entries.forEach(e=>{
     const tr = document.createElement('tr');
-    const gifts = (e.gifts || []).join(', ');
+
+    // Buscar al asignado en la lista
+    const assigned = entries.find(x => x.generatedNumber === e.assignedRecipient);
+    const assignedGifts = assigned && assigned.gifts ? assigned.gifts.join(', ') : '—';
+
     tr.innerHTML = `
-      <td data-label="# Generado">${e.generatedNumber}</td>
-      <td data-label="Opciones de regalo">${gifts}</td>
-      <td data-label="# Asignado">${e.assignedRecipient}</td>
+      <td data-label="Tú número">${e.generatedNumber}</td>
+      <td data-label="# Asignado">${e.assignedRecipient || '—'}</td>
+      <td data-label="Opciones de regalo">${assignedGifts}</td>
     `;
     tbody.appendChild(tr);
   });
@@ -409,12 +348,28 @@ document.getElementById('close-modal').addEventListener('click', ()=>{
   document.getElementById('modal-backdrop').style.display = 'none';
 });
 
-// inicializar con un campo
 giftsContainer.innerHTML = '';
 giftsContainer.appendChild(createGiftField());
 renumberGifts();
 
 loadPublicEntries();
+
+if (registroCerrado) {
+  // Desactiva campos
+  document.querySelectorAll('#entry-form input, #entry-form button').forEach(el => {
+    el.disabled = true;
+    el.style.opacity = 0.6;
+  });
+
+  // Agrega mensaje de aviso
+  const aviso = document.createElement('p');
+  aviso.className = 'small';
+  aviso.style.color = '#b91c1c';
+  aviso.style.fontWeight = 'bold';
+  aviso.textContent = '🚫 El registro ha sido cerrado porque el sorteo ya fue realizado.';
+  document.getElementById('entry-form').appendChild(aviso);
+}
+
 </script>
 </body>
 </html>
